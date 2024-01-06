@@ -5,9 +5,7 @@ on:
       - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -17,6 +15,19 @@ jobs:
       #- run: npm clean install
       #- run: npm run build --if-present
       - name: build Dockerfile
-        run: docker --help
+        run: docker build -f ./Dockerfile -t ahmedsherifmo/node-server
+  test:
+    runs-on: ubuntu-latest 
+    steps:
       - name: Test stage
         run: npm test
+  publish-image:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ahmedsherifmo
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push-image-to-reg
+        run: docker push ahmedsherifmo/node-server
