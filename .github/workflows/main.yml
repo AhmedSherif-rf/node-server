@@ -16,20 +16,18 @@ jobs:
       #- run: npm run build --if-present
       - name: build Dockerfile
         run: docker build -t ahmedsherifmo/node-server .
-  test:
-    runs-on: ubuntu-latest 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Test stage
-        run: npm test
-  publish-image:
-    runs-on: ubuntu-latest 
-    steps:
-      - uses: actions/checkout@v4
+      - name: test vars
+        run: echo $DOCKER_PASSWORD
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
           username: ahmedsherifmo
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push-image-to-reg
-        run: docker push ahmedsherifmo/node-server
+        run: docker push ahmedsherifmo/node-server  
+  test:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test stage
+        run: npm test
